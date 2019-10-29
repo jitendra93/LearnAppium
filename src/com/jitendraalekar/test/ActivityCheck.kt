@@ -2,19 +2,20 @@ package com.jitendraalekar.test
 
 import io.appium.java_client.AppiumDriver
 import io.appium.java_client.MobileElement
+import io.appium.java_client.android.AndroidDriver
 import io.appium.java_client.remote.MobileCapabilityType
 import org.junit.jupiter.api.Test
-import org.openqa.selenium.WebDriver
 import org.openqa.selenium.remote.DesiredCapabilities
 import java.io.File
 import java.net.MalformedURLException
 import java.net.URL
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
+import kotlin.test.assertEquals
 
-class ConnectAndFirstRun {
+class ActivityCheck {
 
-    lateinit var webDriver : AppiumDriver<MobileElement>
+    lateinit var driver : AndroidDriver<MobileElement>
     private fun desiredCapabilities(app: File): DesiredCapabilities {
         return DesiredCapabilities(
                 mapOf<String, Any>(
@@ -33,8 +34,11 @@ class ConnectAndFirstRun {
 
         val capabilities = desiredCapabilities(appLocation())
 
-        webDriver = AppiumDriver<MobileElement>(URL("http://0.0.0.0:4723/wd/hub"), capabilities)
-        webDriver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS)
+        driver = AndroidDriver(URL("http://0.0.0.0:4723/wd/hub"), capabilities)
+        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS)
+
+        assertEquals(driver.currentActivity(),".ApiDemos")
+        assertEquals(driver.currentPackage,"io.appium.android.apis")
 
     }
 
